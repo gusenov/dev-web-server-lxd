@@ -1,39 +1,24 @@
-# ll4d
-LXD LAMP For Development.
-A simple script that automatically sets up a LAMP development environment under LXD in Ubuntu.
+# Назначение скрипта [dev-web-server.sh](dev-web-server.sh)
 
-This script is quite simple, and does not really have much to explain.
-It sets up a LXC/LXD container environment, creates a LAMP server on a new instance and 
-creates a symbolic link from the apache root directory in the container to wherever you want.
-This allows you to confortably work on the code from your desktop with your graphic editors 
-and visualize the result on real time on the server.
+Данный скрипт предназначен для быстрого развертывания виртуальной серверной среды для веб-разработки.
 
-There are only two ways to run the script:
-- Without arguments: builds the test environment
-- As `ll4d.sh --clean`: which deletes the container and the sylink
+LXC-контейнер создаётся на базе Ubuntu и следующего программного обеспечения для веб-серверов:
 
-Everything is default, but you can edit the following variables:
-- `CONTAINER_NAME`: name of the container to be created
-- `LAMP_DIR`: address to the link that will point to the apache root folder
-- `MYSQL_PASSWORD`: the password for the user 'root' in apache
+- Apache HTTP Server 2
+- MySQL Server
+- PHP 7
 
-Usage:
-```
-git clone https://github.com/julenl/ll4d
-cd ll4d && ./ll4d.sh
-```
-or just
-```
-wget https://github.com/julenl/ll4d/blob/master/ll4d.sh
-./ll4d.sh
+# Примеры использования
+
+Все три нижеприведенные команды эквивалентны и создадут LXC-контейнер с наименованием *devel-web-server*.
+
+```bash
+$ ./dev-web-server.sh
+$ ./dev-web-server.sh -n=devel-web-server
+$ ./dev-web-server.sh --name=devel-web-server
 ```
 
-Clean everything:
-```
-./ll4d.sh --clean
-rm -rf ll4d*
-sudo aptitude purge lxd
-```
+# Ссылки
 
-> As a note: it takes around **48 seconds** to build the whole environment on a Intel NUC (i7/16GB)
-> and *764 MB* of space on the hard disk.
+- [digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu)
+- [serversforhackers.com/c/installing-mysql-with-debconf](https://serversforhackers.com/c/installing-mysql-with-debconf)
