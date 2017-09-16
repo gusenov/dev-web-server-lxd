@@ -1,55 +1,30 @@
 #!/bin/bash
-set -x # echo on
 
 # Usage:
-#  $ ./dev-web-server.sh -n=devel-web-server
-#  $ ./dev-web-server.sh --name=devel-web-server
+#  $ "./dev-web-server.sh" -c="devel-web-server" -u="root" -p="Enter-Your-Password-Here"
+#  $ "./dev-web-server.sh" --container="devel-web-server" --user="root" --password="Enter-Your-Password-Here"
 
-# Наименование по умолчанию для LXC-контейнера для веб-разработки:
-container_name="devel-web-server"
+set -x # echo on
 
-for i in "$@"
-do
-case $i in
-    -n=*|--name=*)
-    container_name="${i#*=}"
-    shift # past argument=value
-    ;;
-esac
-done
+source "./argument/container.sh"
+source "./argument/user.sh"
+source "./argument/password.sh"
 
+./container/delete.sh --container="$container"
+./container/create.sh --container="$container"
 
-function update_container()
-{
-    lxc exec "$1" -- sudo apt-get update
-    lxc exec "$1" -- sudo apt-get -qq upgrade
-    lxc exec "$1" -- sudo apt-get autoremove
-}
+sleep 16
 
-function install_apache_mysql_and_php()
-{
-    # lxc exec "$1" -- ifconfig eth0 | grep inet | awk '{ print $2 }' # your Server’s IP address
-    
-    # Установка Apache HTTP Server:
-    lxc exec "$1" -- sudo apt-get -qq install apache2
+echo -n "Your server’s IP address: "
+./container/ip.sh     --container="$container"
 
-    # Установка MySQL Server:
-    lxc exec "$1" -- sudo apt-get -qq install mysql-server php7.0-mysql
-    lxc exec "$1" -- sudo /usr/bin/mysql_secure_installation
-    
-    # Установка PHP:
-    lxc exec "$1" -- sudo apt-get -qq install php7.0 libapache2-mod-php7.0 php7.0-mcrypt
-    
-    # Перезапуск веб-сервера:
-    lxc exec "$1" -- sudo service apache2 restart
-}
+./container/update.sh --container="$container"
+./apache/install.sh   --container="$container"
+./php/install.sh      --container="$container"
+./mysql/install.sh    --container="$container" --password="$password"
+./mysql/secure.sh     --container="$container" --user="$user" --password="$password"
+./apache/restart.sh   --container="$container"
 
-# Остановить и удалить старый контейнер:
-lxc stop "$container_name"
-lxc delete "$container_name"
-
-# Создать и запустить новый контейнер:
-lxc launch ubuntu: "$container_name"
 
 # Информация о контейнере:
 # lxc list
@@ -59,8 +34,8 @@ lxc launch ubuntu: "$container_name"
 # lxc list | grep "$container_name" | awk '{print $6}' # IP
 # cat /etc/default/lxd-bridge
 
-# Нужно немного подождать пока всё запустится:
-sleep 16
+# Чтобы просмотреть другие доступные опции нужно выполнить:
+# sudo apt-get -qq install debconf-utils
+# sudo debconf-get-selections | grep mysql
 
-update_container "$container_name"
-install_apache_mysql_and_php "$container_name"
+
