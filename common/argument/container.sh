@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage:
-#  source "./argument/container.sh"
+#  source "./common/argument/container.sh"
 
 container="devel-web-server"
 
@@ -10,6 +10,5 @@ do
 case $i in
     -c=*|--container=*)
     container="${i#*=}"
-    shift # past argument=value
 esac
 done 

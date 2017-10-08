@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage:
-#  source "./argument/interface.sh"
+#  source "./common/argument/interface.sh"
 
 interface="eth0"
 
@@ -10,6 +10,5 @@ do
 case $i in
     -i=*|--interface=*)
     interface="${i#*=}"
-    shift # past argument=value
 esac
 done 

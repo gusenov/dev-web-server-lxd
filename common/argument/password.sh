@@ -1,15 +1,14 @@
 #!/bin/bash
 
 # Usage:
-#  source "./argument/password.sh"
+#  source "./common/argument/password.sh"
 
-password=""
+password="Enter-Your-Password-Here"
 
 for i in "$@"
 do
 case $i in
     -p=*|--password=*)
     password="${i#*=}"
-    shift # past argument=value
 esac
 done 

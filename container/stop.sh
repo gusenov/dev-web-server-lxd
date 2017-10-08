@@ -4,7 +4,7 @@
 #  $ "./container/stop.sh" -c="devel-web-server"
 #  $ "./container/stop.sh" --container="devel-web-server"
 
-source "./argument/container.sh"
+source "./common/argument/container.sh"
 
 set -x # echo on
 

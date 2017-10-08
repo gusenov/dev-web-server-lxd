@@ -4,7 +4,7 @@
 #  $ "./container/update.sh" -c="devel-web-server"
 #  $ "./container/update.sh" --container="devel-web-server"
 
-source "./argument/container.sh"
+source "./common/argument/container.sh"
 
 set -x # echo on
 
