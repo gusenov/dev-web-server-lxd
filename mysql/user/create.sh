@@ -37,7 +37,8 @@ SHOW GRANTS FOR '$user'@'$host';
 -- The asterisks in this command refer to the database and table (respectively) that they can access—this specific command allows to the user to read, edit, execute and perform all tasks across all the databases and tables.
 -- Once you have finalized the permissions that you want to set up for your new users, always be sure to reload all the privileges.
 
-GRANT ALL PRIVILEGES ON \`$database\`.* TO '$user'@'$host';
+-- GRANT ALL PRIVILEGES ON \`$database\`.* TO '$user'@'$host';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON \`$database\`.* TO '$user'@'$host';
 FLUSH PRIVILEGES;
 
 SHOW GRANTS FOR '$user'@'$host';

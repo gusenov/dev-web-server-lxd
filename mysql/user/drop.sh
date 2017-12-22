@@ -12,6 +12,9 @@ source "./common/argument/password.sh"
 
 source "./common/argument/login.sh"
 
+"./common/output/colorful.sh" --colour="red" --format="b" \
+                              --text="Dropping MySQL user $user..." 
+
 set -x # echo on
 
 (

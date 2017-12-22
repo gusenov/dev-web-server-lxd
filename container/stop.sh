@@ -6,6 +6,9 @@
 
 source "./common/argument/container.sh"
 
+"./common/output/colorful.sh" --colour="red" --format="b" \
+                              --text="Stopping container $container..." 
+
 set -x # echo on
 
 lxc stop "$container"

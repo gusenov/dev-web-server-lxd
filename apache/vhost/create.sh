@@ -20,13 +20,9 @@ function create_virtual_host()
     document_root="/var/www/$domain/public_html"
     lxc exec "$container" -- sudo mkdir -p "$document_root"
     
-    # Grant Permissions
-    # Now we have the directory structure for our files, but they are owned by our root user.
-    # If we want our regular user to be able to modify files in our web directories, we can change the ownership by doing this:
-    user=$(lxc exec "$container" -- sh -c 'echo $USER')
-    lxc exec "$container" -- sudo chown -R $user:$user "$document_root"
-    # The $USER variable will take the value of the user you are currently logged in as when you press "ENTER". 
-    # By doing this, our regular user now owns the public_html subdirectories where we will be storing our content.
+    "./apache/vhost/grant.sh" --container="$container" \
+                              --general="/var/www" \
+                              --web="$domain/public_html"
 
     index_html=$(cat << EOF
 <!DOCTYPE html>
@@ -57,6 +53,11 @@ EOF
 
     # http://httpd.apache.org/docs/current/mod/core.html#documentroot
     lxc exec "$container" -- sudo sed -i "s|DocumentRoot \/var\/www\/html|DocumentRoot $document_root|g" "$apache_configuration_file"
+    
+    # http://httpd.apache.org/docs/current/mod/core.html#directory
+    # http://httpd.apache.org/docs/current/mod/core.html#options
+    # http://httpd.apache.org/docs/current/mod/core.html#allowoverride
+    lxc exec "$container" -- sudo sed -i "s|</VirtualHost>|\n        <Directory $document_root>\n                Options Indexes FollowSymLinks MultiViews\n                AllowOverride All\n                Order allow,deny\n                allow from all\n        </Directory>\n</VirtualHost>|g" "$apache_configuration_file"
 
 
     lxc exec "$container" -- sudo a2ensite "$domain.conf"
@@ -79,6 +80,6 @@ fi
 lxc exec "$container" -- cat "/etc/hosts"
 
 
-# We should also modify our permissions a little bit to ensure that read access is permitted to the general web directory and all of the files and folders it contains so that pages can be served correctly:
-lxc exec "$container" -- sudo chmod -R 755 "/var/www"
-# Your web server should now have the permissions it needs to serve content, and your user should be able to create content within the necessary folders.
+"./apache/vhost/grant.sh" --container="$container" \
+                          --general="/var/www" \
+                          --web="$domain/public_html"

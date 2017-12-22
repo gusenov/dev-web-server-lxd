@@ -66,6 +66,8 @@
 
 - [Папка public_html](https://support.ehost.com/articles/cpanel/public_html-folder)
 
+- [Настройка mod_rewrite](https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_rewrite-for-apache-on-ubuntu-14-04)
+
 ## MySQL
 
 - [Как провести тихую установку MySQL](https://serversforhackers.com/c/installing-mysql-with-debconf)

@@ -8,6 +8,9 @@ source "./common/argument/user.sh"
 source "./common/argument/password.sh"
 source "./common/argument/database.sh"
 
+"./common/output/colorful.sh" --colour="red" --format="b" \
+                              --text="Dropping MySQL database $database..." 
+
 set -x # echo on
 
 (

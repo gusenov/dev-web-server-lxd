@@ -7,6 +7,9 @@
 source "./common/argument/container.sh"
 source "./common/argument/domain.sh"
 
+"./common/output/colorful.sh" --colour="red" --format="b" \
+                              --text="Removing Apache virtual host $domain..." 
+
 set -x # echo on
 
 lxc exec "$container" -- sudo a2dissite "$domain.conf"

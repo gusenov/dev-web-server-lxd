@@ -9,4 +9,7 @@ source "./common/argument/container.sh"
 set -x # echo on
 
 ./container/stop.sh --container="$container"
+
+"./common/output/colorful.sh" --colour="red" --format="b" \
+                              --text="Removing container $container..." 
 lxc delete "$container"

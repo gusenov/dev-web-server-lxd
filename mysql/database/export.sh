@@ -13,9 +13,9 @@ set -x # echo on
 date_time_now=$(date +"%Y%m%d_%H%M%S")
 
 lxc exec "$container" -- mysqldump -u "$user" -p$password "$database" > "backup-$database-$date_time_now.sql"
-lxc exec "$container" -- mysqldump -u "$user" -p$password "$database" | gzip > "backup-$database-$date_time_now.sql.gz"
+#lxc exec "$container" -- mysqldump -u "$user" -p$password "$database" | gzip > "backup-$database-$date_time_now.sql.gz"
 
-lxc exec "$container" -- mysqldump -u "$user" -p$password --all-databases > "all_databases-$date_time_now.sql"
+#lxc exec "$container" -- mysqldump -u "$user" -p$password --all-databases > "all_databases-$date_time_now.sql"
 
 # --all-databases, -A
 # 
