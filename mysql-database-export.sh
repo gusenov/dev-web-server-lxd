@@ -1,21 +1,19 @@
 #!/bin/bash 
 
-# Usage:
-#  $ "./mysql/database/export.sh" --container="devel-web-server" --user="" --password="" --database=""
+#set -n  # Uncomment to check your syntax, without execution.
+#set -x  # Uncomment to debug this shell script 
 
-source "./common/argument/container.sh"
-source "./common/argument/user.sh"
-source "./common/argument/password.sh"
-source "./common/argument/database.sh"
-
-set -x # echo on
+container_name="devel-web-server"
+mysql_user_name="root"
+mysql_user_password=""
+database_name=""
 
 date_time_now=$(date +"%Y%m%d_%H%M%S")
 
-lxc exec "$container" -- mysqldump -u "$user" -p$password "$database" > "backup-$database-$date_time_now.sql"
-#lxc exec "$container" -- mysqldump -u "$user" -p$password "$database" | gzip > "backup-$database-$date_time_now.sql.gz"
+lxc exec "$container_name" -- mysqldump -u "$mysql_user_name" -p$mysql_user_password "$database_name" > "backup-$database_name-$date_time_now.sql"
+lxc exec "$container_name" -- mysqldump -u "$mysql_user_name" -p$mysql_user_password "$database_name" | gzip > "backup-$database_name-$date_time_now.sql.gz"
 
-#lxc exec "$container" -- mysqldump -u "$user" -p$password --all-databases > "all_databases-$date_time_now.sql"
+lxc exec "$container_name" -- mysqldump -u "$mysql_user_name" -p$mysql_user_password --all-databases > "all_databases-$date_time_now.sql"
 
 # --all-databases, -A
 # 
@@ -30,3 +28,4 @@ lxc exec "$container" -- mysqldump -u "$user" -p$password "$database" > "backup-
 # 
 # This option may be used to dump the INFORMATION_SCHEMA and performace_schema databases, which normally are not
 # dumped even with the --all-databases option. (Also use the --skip-lock-tables option.)
+
